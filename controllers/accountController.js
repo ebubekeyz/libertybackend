@@ -6,7 +6,7 @@ const createAccount = async (req, res) => {
   const account = await Account.create(req.body);
   res.status(StatusCodes.CREATED).json({ attributes: account });
 };
-
+// hh
 const getAllAccounts = async (req, res) => {
   let { user, date, name, accountNumber, bank, sort } = req.query;
 
