@@ -8,10 +8,13 @@ const { Resend } = require('resend');
 const transporter = nodemailer.createTransport({
   host: process.env.GMAIL_HOST,
   port: process.env.GMAIL_PORT,
+  secure: true,
   auth: {
     user: process.env.GMAIL_USER,
     pass: process.env.GMAIL_PASS,
   },
+  logger: true,
+  debug: true,
 });
 
 
