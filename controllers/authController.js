@@ -4,11 +4,17 @@ const { BadRequestError, UnauthorizedError } = require('../errors');
 const nodemailer = require('nodemailer');
 const bcrypt = require('bcryptjs');
 const { Resend } = require('resend');
-const resend = new Resend(process.env.RESEND_API_KEY);
-// const client = twilio(
-//   process.env.TWILIO_ACCOUNT_SID,
-//   process.env.TWILIO_AUTH_TOKEN
-// );
+// const resend = new Resend(process.env.RESEND_API_KEY);
+const transporter = nodemailer.createTransport({
+  host: process.env.GMAIL_HOST,
+  port: process.env.GMAIL_PORT,
+  auth: {
+    user: process.env.GMAIL_USER,
+    pass: process.env.GMAIL_PASS,
+  },
+});
+
+
 
 const registerUser = async (req, res) => {
   let {
@@ -192,12 +198,18 @@ const loginUser = async (req, res) => {
      let randomTenDigit = getRandomTenDigit();
      
   
-   await resend.emails.send({
-    from: 'Liberty Credit Union <support@liberty-creditunion.com>',
-    to: [email],
-     subject: 'Your OTP Code',
-      html: `<p>Your OTP code is: <strong>${randomTenDigit}</strong></p>`,
-  });
+      await transporter.sendMail({
+        from: `"Liberty Credit Union" <support@liberty-cu.com>`,
+        to: email,
+        subject: "Your OTP Code",
+        html:  `<p>Your OTP code is: <strong>${randomTenDigit}</strong></p>`,
+      });
+  //  await resend.emails.send({
+  //   from: 'Liberty Credit Union <support@liberty-creditunion.com>',
+  //   to: [email],
+  //    subject: 'Your OTP Code',
+  //     html: `<p>Your OTP code is: <strong>${randomTenDigit}</strong></p>`,
+  // });
 
    res
     .status(StatusCodes.OK)
