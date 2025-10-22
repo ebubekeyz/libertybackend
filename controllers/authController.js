@@ -203,16 +203,21 @@ const loginUser = async (req, res) => {
      let randomTenDigit = getRandomTenDigit();
 
 
-     
-     
-     sgMail
-  .send({
+     const msg = {
   to: `${email}`, // Change to your recipient
   from: 'team.code.addict@gmail.com', // Change to your verified sender
-  subject: 'Your OTP Code',
+  subject: 'Sending with SendGrid is Fun',
  html:  `<p>Your OTP code is: <strong>${randomTenDigit}</strong></p>`,
-     })
-  
+     }
+     
+     sgMail
+  .send(msg)
+  .then(() => {
+    console.log('Email sent')
+  })
+  .catch((error) => {
+    console.error(error)
+  })
      
   
       // await transporter.sendMail({
