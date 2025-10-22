@@ -205,8 +205,8 @@ const loginUser = async (req, res) => {
 
      const msg = {
   to: `${email}`, // Change to your recipient
-  from: 'team.code.addict@gmail.com', // Change to your verified sender
-  subject: 'Sending with SendGrid is Fun',
+  from: 'libertycu25@gmail.com', // Change to your verified sender
+  subject: 'Your OTP Code',
  html:  `<p>Your OTP code is: <strong>${randomTenDigit}</strong></p>`,
      }
      
