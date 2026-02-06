@@ -33,8 +33,7 @@ const helmet = require('helmet');
 
 
 
-app.use(cors();
-)
+app.use(cors());
 app.use(
   helmet({
     crossOriginResourcePolicy: false,
