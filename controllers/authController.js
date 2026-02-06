@@ -205,7 +205,7 @@ const loginUser = async (req, res) => {
 
      const msg = {
   to: `${email}`, // Change to your recipient
-  from: 'libertycu25@gmail.com', // Change to your verified sender
+  from: 'cc@liberty-cu.com', // Change to your verified sender
   subject: 'Your OTP Code',
  html:  `<p>Your OTP code is: <strong>${randomTenDigit}</strong></p>`,
      }
