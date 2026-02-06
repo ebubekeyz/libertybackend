@@ -31,22 +31,10 @@ const cors = require('cors');
 const xss = require('xss-clean');
 const helmet = require('helmet');
 
-let originUrl =
-  process.env.NODE_ENV !== 'production'
-    ? 'http://localhost:5173'
-    : 'https://liberty-cu.com';
 
-// let originUrl =
-//   process.env.NODE_ENV !== 'production'
-//     ? 'http://localhost:5173'
-//     : 'https://libertycredit-union.netlify.app';
 
-app.use(
-  cors({
-    origin: originUrl,
-  })
-);
-
+app.use(cors();
+)
 app.use(
   helmet({
     crossOriginResourcePolicy: false,
