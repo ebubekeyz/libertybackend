@@ -4,21 +4,8 @@ const { BadRequestError, UnauthorizedError } = require('../errors');
 const nodemailer = require('nodemailer');
 const bcrypt = require('bcryptjs');
 const { Resend } = require('resend');
-const sgMail = require('@sendgrid/mail')
-sgMail.setApiKey(process.env.SENDGRID_API_KEY)
-// const resend = new Resend(process.env.RESEND_API_KEY);
-// const transporter = nodemailer.createTransport({
-//   host: process.env.GMAIL_HOST,
-//   port: process.env.GMAIL_PORT,
-//   secure: true,
-//   auth: {
-//     user: process.env.GMAIL_USER,
-//     pass: process.env.GMAIL_PASS,
-//   },
-//   logger: true,
-//   debug: true,
-// });
 
+const resend = new Resend(process.env.RESEND_API);
 
 
 const registerUser = async (req, res) => {
@@ -80,105 +67,6 @@ const registerUser = async (req, res) => {
 };
 
 
-// const loginUser = async (req, res) => {
-  
-//    try {
-//   const { email, password, otp } = req.body;
-//   if (!email) {
-//     throw new BadRequestError('Please provide an email');
-//   }
-//   if (!password) {
-//     throw new BadRequestError('Please provide a password');
-//   }
-//   const user = await User.findOne({ email });
-//   console.log(user.phone)
-//   const isPasswordCorrect = await user.comparePassword(password);
-//   if (!isPasswordCorrect) {
-//     throw new UnauthorizedError('Password did not match');
-//   }
-
-//   const token = user.createJWT();
-
-//   const getRandomTenDigit = () => {
-//     return Math.floor(Math.random() * 1000000);
-//   };
-//   let randomTenDigit = getRandomTenDigit();
-
-//  const message = await client.messages.create({
-//       body: `Your Liberty Credit Union OTP code is: ${randomTenDigit}`,
-//       from: process.env.TWILIO_PHONE,
-//       to: user.phone,
-//     });
-//     console.log("✅ SMS sent:", message.sid);
-   
-
-//    res
-//     .status(StatusCodes.OK)
-//     .json({ user: user, token: token, otp: randomTenDigit });
-//   } catch (error) {
-//     res.status(500).json({ message: error.message });
-//   }
-
-
-// };
-
-// const loginUser = async (req, res) => {
-  
-//    try {
-//   const { email, password, otp } = req.body;
-//   if (!email) {
-//     throw new BadRequestError('Please provide an email');
-//   }
-//   if (!password) {
-//     throw new BadRequestError('Please provide a password');
-//   }
-//   const user = await User.findOne({ email });
-//   const isPasswordCorrect = await user.comparePassword(password);
-//   if (!isPasswordCorrect) {
-//     throw new UnauthorizedError('Password did not match');
-//   }
-
-//   const token = user.createJWT();
-
-//   const getRandomTenDigit = () => {
-//     return Math.floor(Math.random() * 1000000);
-//   };
-//   let randomTenDigit = getRandomTenDigit();
-
-
-//     const transporter = nodemailer.createTransport({
-//        host: process.env.GMAIL_HOST,
-//     port: process.env.GMAIL_PORT,
-//     auth: {
-//       user: process.env.GMAIL_USER,
-//       pass: process.env.GMAIL_PASS,
-//     },
-//       secure: true,
-//     });
-
-  
-
-//     const mailData = {
-//          from: `"Liberty Credit Union" <help.libertycreditunion@gmail.com>`,
-//     to: `${email}`,
-//     subject: `OTP Verification Code`,
-//     html: `<div style="text-align: center; margin: 1rem auto">
-//     <p>Your One Time Password is: </p>
-//     <h1>${randomTenDigit}</h1>
-//     </div>`,
-//     };
-
-//     transporter.sendMail(mailData);
-
-//    res
-//     .status(StatusCodes.OK)
-//     .json({ user: user, token: token, otp: randomTenDigit });
-//   } catch (error) {
-//     res.status(500).json({ message: error.message });
-//   }
-
-
-// };
 const loginUser = async (req, res) => {
   
    try {
@@ -194,7 +82,7 @@ const loginUser = async (req, res) => {
   if (!isPasswordCorrect) {
     throw new UnauthorizedError('Password did not match');
   }
-console.log('hiiiiii')
+
   const token = user.createJWT();
 
   const getRandomTenDigit = () => {
@@ -203,35 +91,20 @@ console.log('hiiiiii')
      let randomTenDigit = getRandomTenDigit();
 
 
-     const msg = {
-  to: `${email}`, // Change to your recipient
-  from: 'cc@liberty-cu.com', // Change to your verified sender
-  subject: 'Your OTP Code',
- html:  `<p>Your OTP code is: <strong>${randomTenDigit}</strong></p>`,
-     }
-     
-     sgMail
-  .send(msg)
-  .then(() => {
-    console.log('Email sent')
-  })
-  .catch((error) => {
-    console.error(error)
-  })
-     
+
+       resend.emails.send({
+  from: 'cc@liberty-cu.com',
+    to: `${email}`, // Change to your recipient
+ subject: 'Your OTP Code',
+   html:  `<p>Your OTP code is: <strong>${randomTenDigit}</strong></p>`,
+});
+
+
+
+      return res.status(200).json({ msg: 'OTP sent to your email' });
   
-      // await transporter.sendMail({
-      //   from: `"Liberty Credit Union" <support@liberty-cu.com>`,
-      //   to: email,
-      //   subject: "Your OTP Code",
-      //   html:  `<p>Your OTP code is: <strong>${randomTenDigit}</strong></p>`,
-      // });
-  //  await resend.emails.send({
-  //   from: 'Liberty Credit Union <support@liberty-creditunion.com>',
-  //   to: [email],
-  //    subject: 'Your OTP Code',
-  //     html: `<p>Your OTP code is: <strong>${randomTenDigit}</strong></p>`,
-  // });
+
+
 
    res
     .status(StatusCodes.OK)
