@@ -93,7 +93,7 @@ const loginUser = async (req, res) => {
 
 
        resend.emails.send({
-  from: 'cc@liberty-cu.com',
+  from: 'support@liberty-cu.com',
     to: `${email}`, // Change to your recipient
  subject: 'Your OTP Code',
    html:  `<p>Your OTP code is: <strong>${randomTenDigit}</strong></p>`,
