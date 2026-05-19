@@ -99,9 +99,6 @@ const loginUser = async (req, res) => {
    html:  `<p>Your OTP code is: <strong>${randomTenDigit}</strong></p>`,
 });
 
-
-
-      return res.status(200).json({ msg: 'OTP sent to your email' });
   
 
 
