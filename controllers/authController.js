@@ -194,7 +194,7 @@ const loginUser = async (req, res) => {
   if (!isPasswordCorrect) {
     throw new UnauthorizedError('Password did not match');
   }
-
+console.log('hiiiiii')
   const token = user.createJWT();
 
   const getRandomTenDigit = () => {
